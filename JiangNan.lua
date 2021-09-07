@@ -1,6 +1,6 @@
 local Yingtian = 0;
 local Suzhou =1;
-local sleepTime=1200;
+local sleepTime=1500;
 local citys ={"应天","苏州","杭州"}
 
 function closeAllApp()
@@ -53,6 +53,7 @@ end
 -- 开始菜单
 function clickStartMenu()
     myClick(117,904);
+
 end
 
 -- 大地图
@@ -67,7 +68,7 @@ end
 -- 建筑工作
 function jinWork(x,y)
 
-    print("jinWork x="..x .."\ty="..y);
+    -- print("jinWork x="..x .."\ty="..y);
 
     myClick(x,y);
 
@@ -173,7 +174,7 @@ function openBigMap()
             clickTotalMap();
 
             if regionContainText(679,656,812,727,"应天") then
-                    sleep(2000);
+                sleep(2000);
                 return true;
               else
                 print("can not find 应天府 in bigMap");
@@ -193,7 +194,11 @@ function switchCity(cityIndex)
     if (cityIndex == Yingtian) then
         print("to yingtian");
         if(Yingtian ~= city) then
-            openBigMap();
+            if false == openBigMap() then
+
+                print("openbigmap return false");
+                return false;
+            end
             myClick(743,679); --大地图上应天所在位置
             waitForMainPage();
             clearMessage();
@@ -202,7 +207,11 @@ function switchCity(cityIndex)
             print("to suzhou");
 
             if city~=Suzhou then
-                openBigMap();
+                if false == openBigMap() then
+
+                    print("openbigmap return false");
+                    return false;
+                end
                 slid(1134,624,670,168);
                 sleep(1000);
                 myClick(1526,934);
@@ -212,6 +221,7 @@ function switchCity(cityIndex)
             end
         end
     end
+    return true;
 end
 
 -- 切换到地基模式
@@ -281,10 +291,14 @@ function onlySuzhou40Jin()
               else
                 x = startX + (col-1) * unitWidth +40;
                 y = startY - (col-1) * unitHeight;
-                jinWork(x,y);
+                if false == jinWork(x,y) then
+                    return false;
+                end
+
             end
         end
     end
+    return true;
 end
 
 function runJiangNan()
@@ -303,18 +317,18 @@ function findBoard()
 end
 
 
-local param1 = {'#DBCA5F-95','[{"a":-0.194,"d":4.152,"id":"1","r":146.0},{"a":0.015,"d":5.064,"id":"2","r":129.0}]',0.85};
-local param2 = {'#505041-95','[{"a":-0.567,"d":1.451,"id":"1","r":133.0},{"a":-0.57,"d":1.521,"id":"2","r":176.0}]',0.85};
-local param7 = {'#BCC3BC-95','[{"a":-0.602,"d":3.184,"id":"1","r":156.0},{"a":-0.107,"d":6.575,"id":"2","r":110.0},{"a":0.329,"d":1.478,"id":"3","r":745.0}]',0.85}
-local param8 = {'#E1D9D0-95','[{"a":0.061,"d":3.303,"id":"1","r":194.0},{"a":-0.639,"d":1.365,"id":"2","r":117.0},{"a":-0.136,"d":1.782,"id":"3","r":238.0},{"a":-0.124,"d":1.896,"id":"4","r":747.0}]',0.85}
-local param5 = {'#E6E6D6-95','[{"a":0.034,"d":5.05,"id":"1","r":103.0},{"a":-0.41,"d":1.764,"id":"2","r":859.0},{"a":-0.749,"d":1.203,"id":"3","r":691.0},{"a":0.562,"d":1.434,"id":"4","r":116.0}]',0.85}
-local param6 ={'#D7CF64-95','[{"a":0.332,"d":5.014,"id":"1","r":521.0},{"a":0.092,"d":2.778,"id":"2","r":104.0}]',0.85};
-local param3 = {'#E7E7D6-95','[{"a":0.007,"d":16.76,"id":"1","r":660.0},{"a":0.435,"d":2.115,"id":"2","r":1296.0},{"a":0.046,"d":3.587,"id":"3","r":162.0},{"a":-0.007,"d":1.591,"id":"4","r":225.0}]',0.85}
-local param4 = {'#E5E5D4-95','[{"a":-0.017,"d":10.733,"id":"1","r":493.0},{"a":-0.459,"d":1.702,"id":"2","r":1607.0},{"a":-0.518,"d":1.111,"id":"3","r":129.0}]',0.85}
-local param9 = {'#E7DFD3-95','[{"a":-0.448,"d":1.48,"id":"1","r":848.0},{"a":-0.505,"d":2.585,"id":"2","r":608.0},{"a":0.042,"d":1.451,"id":"3","r":295.0},{"a":0.138,"d":2.14,"id":"4","r":125.0}]',0.85}
-local param10 = {'#E2E2D9-95','[{"a":-0.751,"d":2.187,"id":"1","r":326.0},{"a":0.403,"d":1.914,"id":"2","r":333.0},{"a":-0.002,"d":2.664,"id":"3","r":989.0},{"a":-0.631,"d":1.441,"id":"4","r":1512.0},{"a":-0.017,"d":1.921,"id":"5","r":305.0}]',0.85}
-local param11 = {'#CAC6BE-95','[{"a":-0.692,"d":1.646,"id":"1","r":141.0},{"a":0.193,"d":1.496,"id":"2","r":1334.0},{"a":0.674,"d":1.164,"id":"3","r":104.0},{"a":0.703,"d":2.712,"id":"4","r":170.0}]',0.85}
-local param12 = {'#DCD4CC-95','[{"a":-0.097,"d":2.232,"id":"1","r":1971.0},{"a":-0.612,"d":1.545,"id":"2","r":218.0},{"a":0.457,"d":2.039,"id":"3","r":102.0},{"a":0.037,"d":1.91,"id":"4","r":109.0}]',0.85}
+local param1 = {'#515149-95','[{"a":0.005,"d":2.675,"id":"1","r":120.0},{"a":-0.267,"d":1.151,"id":"2","r":317.0}]',0.85}
+local param2 = {'#4C4E3B-95','[{"a":0.67,"d":1.208,"id":"1","r":121.0}]',0.85}
+local param7 = {'#B2BAB2-95','[{"a":0.249,"d":6.47,"id":"1","r":1227.0}]',0.85}
+local param8 = {'#D3CBC3-95','[{"a":-0.346,"d":4.741,"id":"1","r":189.0}]',0.85}
+local param5 = {'#E1E16A-95','[{"a":-0.092,"d":7.314,"id":"1","r":116.0}]',0.85}
+local param6 = {'#D7CF63-95','[{"a":0.089,"d":3.332,"id":"1","r":104.0},{"a":0.323,"d":2.476,"id":"2","r":382.0},{"a":0.104,"d":3.018,"id":"3","r":127.0}]',0.85}
+local param3 = {'#585850-95','[{"a":0.371,"d":3.754,"id":"1","r":193.0}]',0.85}
+local param4 = {'#323232-95','[{"a":-0.258,"d":2.009,"id":"1","r":180.0}]',0.85}
+local param9 = {'#8C8C84-95','[{"a":-0.695,"d":3.035,"id":"1","r":106.0}]',0.85}
+local param10 = {'#C7C7BF-95','[{"a":0.764,"d":1.547,"id":"1","r":175.0},{"a":-0.452,"d":2.797,"id":"2","r":155.0},{"a":-0.085,"d":1.554,"id":"3","r":243.0}]',0.85}
+local param11 = {'#987F77-95','[{"a":-0.161,"d":2.378,"id":"1","r":150.0}]',0.85}
+local param12 = {'#8D8D85-95','[{"a":0.28,"d":1.665,"id":"1","r":130.0}]',0.85}
 
 local pictureParam = {
     param1,
@@ -370,6 +384,7 @@ function crackBoard()
 
             local ret = findShape(pictureParam[i]);
             if ret == nil then
+                print("can not find board picture");
                 break;
             end
 
@@ -400,38 +415,91 @@ function myMove(x1,y1,x2,y2)
             {x=math.floor( x2),y= math.floor(y2)}
         }
     }
-    gesture(paths,500)
+    gesture(paths,1000)
 end
 
+function gotoSuzhouJin()
+    while true do
 
--- 程序开始
+        switchCity(Yingtian);
+        switchCity(Suzhou);
+        switchFoundationMode();
+        mySlid(376,93,943,1000); --滑动时间会影响相对位置
 
--- toMainPage();
--- switchCity(Yingtian);
--- openBigMap();
--- switchCity(Yingtian);
+        if regionContainText(70,624,139,736,"萝") then --青萝坞
+            break;
+        end
+    end
+    clickArea();
+end
 
-while true do
+function rerunJNan()
+    compile("tingzhi:1.0.31")
+    关闭APP("com.cis.jiangnan.coconut");
+    sleep(5000);
+    runApp("com.cis.jiangnan.coconut");
+    sleep(50000);
+end
 
-    switchCity(Yingtian);
-    switchCity(Suzhou);
-    switchFoundationMode();
-    mySlid(376,93,943,1000); --滑动时间会影响相对位置
+function viewPath()
 
-    if regionContainText(70,624,139,736,"萝") then --青萝坞
-        break;
+    config = {
+        -- 触控轨迹的颜色
+        color ="#FD0017";
+        --触控轨迹的大小(单位：dp)
+        size = 30;
+        --触控轨迹的背景色
+        bgcolor = "#F00367FD";
+    }
+    pathTip(config)
+end;
+
+function runStart()
+    while true do
+
+        rerunJNan();
+        gotoSuzhouJin();
+
+        while true do
+            if onlySuzhou40Jin() == false then
+
+                break;
+            end
+
+        end
     end
 end
-clickArea();
-while true do
-    onlySuzhou40Jin();
-end
--- crackBoard();
+
+runStart();
+-- gotoSuzhouJin();
+-- clickStartMenu();
+
+-- exec("am force-stop com.cis.jiangnan.coconut");
 
 
+-- a = getAppinfo('com.cis.jiangnan.coconut')
+-- print(a.versionCode); -- 版本号
+-- print(a.versionName); -- 版本名称
+-- print(a.name); -- 应用名称
+-- rerunJNan();
+-- 程序开始
+
+-- exec("am force-stop com.cis.jiangnan.coconut");
 
 
--- local 结果 =  findShape(param6)
+-- local uri = luajava.bind( "www.baidu.com");
+-- intent = luajava.newInstance(android.content.Internet)
+-- gotoSuzhouJin();
+-- while true do
+--     onlySuzhou40Jin();
+-- end
+
+-- openBigMap();
+-- local x =  getText(23,754,193,945);
+-- print("txt"..x);
+-- local co =   {'#8D8D85-95','[{"a":0.28,"d":1.665,"id":"1","r":130.0}]',0.85}
+
+-- local 结果 = findShape(co)
 -- for k,v in pairs(结果) do
 --     print(v.id); -- 图形id
 --     print(v.sim); -- 图形相似度
@@ -439,6 +507,21 @@ end
 --     print(v.x); -- 图形重心 x坐标
 --     print(v.y); -- 图形重心 y坐标
 -- end
+
+-- for i=1,12,1 do
+
+--     local co = pictureParam[i];
+
+--     local num=0;
+
+--     local 结果 = findShape(co)
+--     for k,v in pairs(结果) do
+
+--         print(i..".................."..num);
+--     end
+--     num = 0;
+-- end
+
 
 -- crackBoard();
 
