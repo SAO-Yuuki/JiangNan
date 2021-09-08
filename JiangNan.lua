@@ -1,6 +1,6 @@
 local Yingtian = 0;
 local Suzhou =1;
-local sleepTime=1500;
+local sleepTime=1200;
 local citys ={"应天","苏州","杭州"}
 
 function closeAllApp()
@@ -80,7 +80,9 @@ function jinWork(x,y)
       else
         if findBoard() then
             if false == crackBoard() then
-                return false;
+                if false == crackBoardForce() then
+                    return false;
+                end
             end
         end
         toMainPage();
@@ -408,14 +410,15 @@ function crackBoard()
     end
 end
 
-function myMove(x1,y1,x2,y2)
+function myMove(x1,y1,x2,y2,time)
     paths ={
         { --模拟第一根手指滑动
             {x=math.floor(x1),y=math.floor(y1)}, --将手指移动到屏幕200，200坐标
             {x=math.floor( x2),y= math.floor(y2)}
         }
     }
-    gesture(paths,1000)
+    gesture(paths,time or 500)
+    sleep(time or 500);
 end
 
 function gotoSuzhouJin()
@@ -454,7 +457,7 @@ function viewPath()
     pathTip(config)
 end;
 
-function runStart()
+function run()
     while true do
 
         rerunJNan();
@@ -470,7 +473,74 @@ function runStart()
     end
 end
 
-runStart();
+
+
+function getUnitBoardPosition(index)
+    local left = 710;
+    local right = 1450;
+    local top = 445;
+    local bottom = 710;
+    local unitWidth = (right - left)/6;
+    local unitHeight = (bottom- top)/2;
+    local row = 0;
+    local col = 0;
+
+    if index<=6 then
+        row = 1;
+        col = index;
+      else
+        row =2;
+        col = index-6;
+    end
+    local unitLeft = left + (col-1) *unitWidth;
+    local unitRight = unitLeft + unitWidth;
+    local unitTop = top + (row -1)*unitHeight;
+    local unitBottom = unitTop + unitHeight;
+    local centerX =unitLeft + unitWidth/2;
+    local centerY =unitTop + unitHeight/2;
+    return math.floor(centerX),math.floor(centerY);
+end
+
+-- 暴力拼图
+function crackBoardForce()
+    for i=1,12,1 do
+        x1,y1= getUnitBoardPosition(i)
+        for j =i+1,12,1 do
+            if false == findBoard() then
+                print("crack success");
+                return true;
+              else
+                x2,y2 =getUnitBoardPosition(j)
+                local distance = math.abs(i-j);
+
+                y2 = y2 -30 --偏移量
+                x2 = x2 +30
+
+                local time =500
+                if distance<=2 then
+                    time =500
+                  else
+                    if distance <=3 then
+                        time =800
+                      else
+                        time =1200
+                    end
+                end
+
+                myMove(x1,y1,x2,y2,time);
+                -- myMove(x1,y1,x2,y2,500);
+                print("move("..i..","..j..")\t("..x1..","..y1..")   to  ("..x2..","..y2..")")
+            end
+        end
+    end
+    if (true == findBoard()) then
+        return false;
+    end
+end
+
+
+run()
+-- crackBoardForce()
 -- gotoSuzhouJin();
 -- clickStartMenu();
 
@@ -525,6 +595,8 @@ runStart();
 
 -- crackBoard();
 
+
+-- crackBoard()
 
 
 -- while true do
